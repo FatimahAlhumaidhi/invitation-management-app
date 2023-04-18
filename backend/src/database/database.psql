@@ -1,0 +1,27 @@
+-- Create the Invitations table
+CREATE TABLE IF NOT EXISTS Invitations (
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    email TEXT NOT NULL,
+    plus_one BOOLEAN NOT NULL
+);
+
+-- Create the RSVPs table
+CREATE TABLE IF NOT EXISTS RSVPs (
+    id SERIAL PRIMARY KEY,
+    invitation_id INTEGER NOT NULL REFERENCES Invitations(id),
+    response TEXT NOT NULL,
+    guest_name TEXT NOT NULL,
+    guest_email TEXT NOT NULL
+);
+
+-- Insert some sample data
+INSERT INTO Invitations (name, email, plus_one)
+VALUES ('John Smith', 'john.smith@example.com', true),
+       ('Jane Doe', 'jane.doe@example.com', false),
+       ('Bob Johnson', 'bob.johnson@example.com', true);
+
+INSERT INTO RSVPs (invitation_id, response, guest_name, guest_email)
+VALUES (1, 'Attending', 'John Smith', 'john.smith@example.com'),
+       (1, 'Not Attending', 'Jane Doe', 'jane.doe@example.com'),
+       (2, 'Undecided', 'Bob Johnson', 'bob.johnson@example.com');
