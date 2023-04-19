@@ -1,7 +1,10 @@
 import os
-from sqlalchemy import Column, String, create_engine
+from sqlalchemy import Column, String, Integer, Boolean, create_engine
 from flask_sqlalchemy import SQLAlchemy
-import json
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 database_path = os.environ['DATABASE_URL']
 if database_path.startswith("postgres://"):
@@ -46,16 +49,16 @@ class Invitation(db.Model):
     '''
     __tablename__ = 'invitations'
 
-    id = Column(db.Integer, primary_key=True)
-    name = Column(db.String(120), nullable=False)
-    email = Column(db.String(120), nullable=False)
-    plus_one = Column(db.Boolean, default=False)
+    id = Column(Integer, primary_key=True)
+    name = Column(String(120), nullable=False)
+    email = Column(String(120), nullable=False)
+    text = Column(String(500), nullable=False)
     rsvps = db.relationship('RSVP', backref='invitation', lazy=True)
 
-    def __init__(self, name, email, plus_one=False):
+    def __init__(self, name, email, text=False):
         self.name = name
         self.email = email
-        self.plus_one = plus_one
+        self.text = text
 
     def insert(self):
         db.session.add(self)
@@ -73,7 +76,6 @@ class Invitation(db.Model):
             'id': self.id,
             'name': self.name,
             'email': self.email,
-            'plus_one': self.plus_one
         }
 
 
@@ -90,17 +92,19 @@ class RSVP(db.Model):
     ''' 
     __tablename__ = 'rsvps'
 
-    id = Column(db.Integer, primary_key=True)
-    response = Column(db.String(120), nullable=False)
-    guest_name = Column(db.String(120), nullable=False)
-    guest_email = Column(db.String(120), nullable=False)
-    invitation_id = Column(db.Integer, db.ForeignKey('invitations.id'), nullable=False)
+    id = Column(Integer, primary_key=True)
+    jwt_sub = Column(Integer, nullable=False)
+    response = Column(String(120), nullable=False)
+    guest_name = Column(String(120), nullable=False)
+    guest_email = Column(String(120), unique=True, nullable=False)
+    invitation_id = Column(Integer, db.ForeignKey('invitations.id'), nullable=False)
 
-    def __init__(self, invitation_id, response, guest_name, guest_email):
+    def __init__(self, invitation_id, response, guest_name, guest_email, jwt_sub):
         self.invitation_id = invitation_id
         self.response = response
         self.guest_name = guest_name
         self.guest_email = guest_email
+        self.jwt_sub = jwt_sub
 
     def insert(self):
         db.session.add(self)
@@ -116,6 +120,7 @@ class RSVP(db.Model):
     def format(self):
         return {
             'id': self.id,
+            'jwt_sub': self.jwt_sub,
             'invitation_id': self.invitation_id,
             'response': self.response,
             'guest_name': self.guest_name if self.guest_name else None,
