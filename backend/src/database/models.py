@@ -1,5 +1,5 @@
 import os
-from sqlalchemy import Column, String, Integer, Boolean, create_engine
+from sqlalchemy import Column, String, Integer, create_engine
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
 import os
@@ -52,13 +52,13 @@ class Invitation(db.Model):
     id = Column(Integer, primary_key=True)
     name = Column(String(120), nullable=False)
     email = Column(String(120), nullable=False)
-    text = Column(String(500), nullable=False)
+    description = Column(String(500), nullable=False)
     rsvps = db.relationship('RSVP', backref='invitation', lazy=True)
 
-    def __init__(self, name, email, text=False):
+    def __init__(self, name:str, email:str, description:str) -> None:
         self.name = name
         self.email = email
-        self.text = text
+        self.description = description
 
     def insert(self):
         db.session.add(self)
@@ -76,6 +76,7 @@ class Invitation(db.Model):
             'id': self.id,
             'name': self.name,
             'email': self.email,
+            'description': self.description
         }
 
 
@@ -93,18 +94,20 @@ class RSVP(db.Model):
     __tablename__ = 'rsvps'
 
     id = Column(Integer, primary_key=True)
-    jwt_sub = Column(Integer, nullable=False)
+    jwt_sub = Column(String(120), nullable=False)
     response = Column(String(120), nullable=False)
     guest_name = Column(String(120), nullable=False)
     guest_email = Column(String(120), unique=True, nullable=False)
+    plus_one = Column(db.Boolean, default=False)
     invitation_id = Column(Integer, db.ForeignKey('invitations.id'), nullable=False)
 
-    def __init__(self, invitation_id, response, guest_name, guest_email, jwt_sub):
+    def __init__(self, invitation_id:int, response:str, guest_name:str, guest_email:str, jwt_sub:str, plus_one:bool=False) -> None :
         self.invitation_id = invitation_id
         self.response = response
         self.guest_name = guest_name
         self.guest_email = guest_email
         self.jwt_sub = jwt_sub
+        self.plus_one = plus_one
 
     def insert(self):
         db.session.add(self)
@@ -124,5 +127,6 @@ class RSVP(db.Model):
             'invitation_id': self.invitation_id,
             'response': self.response,
             'guest_name': self.guest_name if self.guest_name else None,
-            'guest_email': self.guest_email if self.guest_email else None
+            'guest_email': self.guest_email if self.guest_email else None,
+            'plus_one':self.plus_one
         }
