@@ -101,7 +101,7 @@ class RSVP(db.Model):
     plus_one = Column(db.Boolean, default=False)
     invitation_id = Column(Integer, db.ForeignKey('invitations.id'), nullable=False)
 
-    def __init__(self, invitation_id:int, response:str, guest_name:str, guest_email:str, jwt_sub:str, plus_one:bool=False) -> None :
+    def __init__(self, invitation_id:int, response:str, guest_name:str, guest_email:str, jwt_sub:str='', plus_one:bool=False) -> None :
         self.invitation_id = invitation_id
         self.response = response
         self.guest_name = guest_name

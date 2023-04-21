@@ -4,8 +4,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-from .database.models import db_drop_and_create_all, setup_db, RSVP, Invitation
-from .auth.auth import AuthError, requires_auth
+from database.models import db_drop_and_create_all, setup_db, RSVP, Invitation
+from auth.auth import AuthError, requires_auth
 
 import os
 import logging
@@ -128,7 +128,7 @@ def create_app(test_config=None):
         return jsonify(success=True, rsvps=[r.format() for r in rsvps])
 
     @app.route('/invitations/<int:invitation_id>/rsvps/<int:rsvp_id>', methods=['GET'])
-    @requires_auth('get:rsvp-details')
+    @requires_auth('get:invitation-rsvp-details')
     def get_rsvp(payload, invitation_id, rsvp_id):
         '''
         GET an RSVP to a single invitation

@@ -28,7 +28,7 @@ VALUES
 -- Insert data into RSVPs table
 INSERT INTO RSVPs (jwt_sub, invitation_id, response, guest_name, guest_email, plus_one)
 VALUES
-('auth0|64402b753c45c24cb0b58f0d', 4, 'Attending', 'Jane Doe', 'janedoe@example.com', true),
-('auth0|64402b753c45c24cb0b58f0d', 1, 'Not Attending', 'John Smith', 'johnsmith@example.com', false),
+('auth0|64402bb66662696de91415e5', 4, 'Attending', 'Jane Doe', 'janedoe@example.com', true),
+('auth0|64402bb66662696de91415e5', 1, 'Not Attending', 'John Smith', 'johnsmith@example.com', false),
 ('auth0|64402bb66662696de91415e5', 2, 'Undecided', 'Bobbi Johnson', 'bobbijohnson@example.com', true),
 ('auth0|64402bb66662696de91415e5', 3, 'Attending', 'Alex Williams', 'alexwilliams@example.com', false);
