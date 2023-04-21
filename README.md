@@ -1,6 +1,8 @@
 # Invitation Management App Project
 Udacity Full-Stack Web Developer Nanodegree Program Capstone Project
 
+the app is deployed [here](https://invitation-management-app.herokuapp.com/)
+
 ## App setup 
 
 ### Environment variables
