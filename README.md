@@ -145,7 +145,7 @@ Errors are returned as JSON objects in the following format:
 
 ```json
 {
-    "success": False, 
+    "success": false, 
     "error": 400,
     "message": "bad request"
 }
@@ -160,7 +160,7 @@ curl -X GET \
     http://localhost:5000/invitations
 ```
 - Sample response
-```bash
+```json
 {
   "success": true,
   "invitations": [
@@ -188,7 +188,7 @@ curl -X GET \
     http://localhost:5000/invitations/1
 ```
 - Sample response
-```bash
+```json
 {
   "success": true,
   "invitations": {
@@ -212,7 +212,7 @@ curl -X POST\
         "description":"Please join us to celebrate our wedding."}'
 ```
 - Sample response
-```bash
+```json
 {
   "success": true,
   "invitations": {
@@ -234,7 +234,7 @@ curl -X PATCH \
     -d '{"name":"John Doe"}'
 ```
 - Sample response
-```bash
+```json
 {
   "success": true,
   "invitations": {
@@ -255,7 +255,7 @@ curl -X DELETE \
     -H "Authorization: Bearer {$TOKEN}"
 ```
 - Sample response
-```bash
+```json
 {
   "success": true,
   "invitation_id": 1
@@ -271,7 +271,7 @@ curl -X GET \
     -H "Authorization: Bearer {$TOKEN}"
 ```
 - Sample response
-```bash
+```json
 {
   "success": true,
   "rsvps": [
@@ -304,7 +304,7 @@ curl -X GET \
   -H 'Authorization: Bearer {$TOKEN}' \
 ```
 - Sample Response:
-```bash
+```json
 {
     "success": true, 
     "rsvps": {
@@ -332,7 +332,7 @@ curl -X POST \
     }'
 ```
 - Sample Response:
-```bash
+```json
 {
   "success": true,
   "rsvps": {
@@ -352,7 +352,7 @@ curl -X POST \
 ```bash
 curl -X PATCH \
   http://localhost:5000/invitations/1/rsvps/1 \
-  -H 'Authorization: Bearer <access_token>' \
+  -H 'Authorization: Bearer {$TOKEN}' \
   -H 'Content-Type: application/json' \
   -d '{
 	"guest_name": "John Smith",
@@ -362,7 +362,7 @@ curl -X PATCH \
 }'
 ```
 - Sample Response:
-```bash
+```json
 {
   "success": true,
   "rsvps": {
@@ -382,10 +382,10 @@ curl -X PATCH \
 ```bash
 curl -X DELETE \
   http://localhost:5000/invitations/1/rsvps/1 \
-  -H 'Authorization: Bearer <access_token>' \
+  -H 'Authorization: Bearer {$TOKEN}' \
 ```
 - Sample Response:
-```bash
+```json
 {
   "success": true,
   "rsvp_id": 1

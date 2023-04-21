@@ -22,7 +22,6 @@ class FlaskAPITestCase(unittest.TestCase):
         self.invitation = Invitation(name='John Doe', email='johndoe@example.com', description='Please come to my birthday party!')
         self.rsvp = RSVP(invitation_id=1, response='Attending', guest_name='Jane Doe', guest_email='janedoe@example.com', plus_one=True, jwt_sub=self.guest_jwt_sub)
 
-        # binds the app to the current context
         with self.app.app_context():
             self.db = SQLAlchemy()
             self.db.init_app(self.app)
@@ -86,9 +85,7 @@ class FlaskAPITestCase(unittest.TestCase):
     def test_retrieve_invitation_by_id(self):
         """Test retrieving a single invitation by ID"""
         self.invitation.insert()
-        # with self.app.app_context():
-        #     db.session.add(self.invitation)
-        #     db.session.commit()
+        
         response = self.client().get(f'/invitations/{self.invitation.id}')
         self.assertEqual(response.status_code, 200)
         self.assertTrue(response.json.get('success'), True)
@@ -97,9 +94,7 @@ class FlaskAPITestCase(unittest.TestCase):
     def test_update_invitation(self):
         """Test updating an existing invitation by ID"""
         self.invitation.insert()
-        # with self.app.app_context():
-        #     db.session.add(self.invitation)
-        #     db.session.commit()
+        
         updated_name = 'Jane Doe'
         response = self.client().patch(f'/invitations/{self.invitation.id}', json={
             'name': updated_name
@@ -111,9 +106,7 @@ class FlaskAPITestCase(unittest.TestCase):
     def test_delete_invitation(self):
         """Test deleting an existing invitation by ID"""
         self.invitation.insert()
-        # with self.app.app_context():
-        #     db.session.add(self.invitation)
-        #     db.session.commit()
+        
         response = self.client().delete(f'/invitations/{self.invitation.id}', headers=self.admin_auth)
         self.assertEqual(response.status_code, 200)
         invitation = Invitation.query.filter_by(email=self.invitation.email).first()
@@ -124,9 +117,7 @@ class FlaskAPITestCase(unittest.TestCase):
     def test_create_rsvp(self):
         """Test creating a new RSVP"""
         self.invitation.insert()
-        # with self.app.app_context():
-        #     db.session.add(self.invitation)
-        #     db.session.commit()
+        
         response = self.client().post(f'/invitations/{self.invitation.id}/rsvps', json={
             'response': self.rsvp.response,
             'guest_name': self.rsvp.guest_name,
@@ -142,19 +133,14 @@ class FlaskAPITestCase(unittest.TestCase):
         """Test retrieving a single RSVP by ID"""
         self.invitation.insert()
         self.rsvp.insert()
-        # with self.app.app_context():
-        #     db.session.add(self.invitation)
-        #     db.session.add(self.rsvp)
-        #     db.session.commit()
+        
         response = self.client().get(f'/invitations/{self.invitation.id}/rsvps/{self.rsvp.id}', headers=self.guest_auth)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json['rsvps']['response'], self.rsvp.response)
     
     def test_get_rsvp_not_found(self):
         self.invitation.insert()
-        # with self.app.app_context():
-        #     db.session.add(self.invitation)
-        #     db.session.commit()
+        
         response = self.client().get('/invitations/1/rsvps/999', headers=self.guest_auth)
         self.assertEqual(response.status_code, 404)
 
@@ -162,10 +148,7 @@ class FlaskAPITestCase(unittest.TestCase):
         """Test updating an existing RSVP by ID"""
         self.invitation.insert()
         self.rsvp.insert()
-        # with self.app.app_context():
-        #     db.session.add(self.invitation)
-        #     db.session.add(self.rsvp)
-        #     db.session.commit()
+        
         updated_response = 'Not Attending'
         response = self.client().patch(f'/invitations/{self.invitation.id}/rsvps/{self.rsvp.id}', json={
             'response': updated_response
@@ -178,10 +161,7 @@ class FlaskAPITestCase(unittest.TestCase):
         """Test deleting an existing RSVP by ID"""
         self.invitation.insert()
         self.rsvp.insert()
-        # with self.app.app_context():
-        #     db.session.add(self.invitation)
-        #     db.session.add(self.rsvp)
-        #     db.session.commit()
+
         response = self.client().delete(f'/invitations/{self.invitation.id}/rsvps/{self.rsvp.id}', headers=self.guest_auth)
         self.assertEqual(response.status_code, 200)
         rsvp = RSVP.query.filter_by(guest_email=self.rsvp.guest_email).first()
