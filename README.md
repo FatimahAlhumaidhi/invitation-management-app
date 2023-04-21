@@ -22,9 +22,9 @@ psql dbname < database.psql
 
 ### Set JWT Tokens 
 
-use auth0 app URI to 
+use auth0 app URI format to get the JWT [example](https://dev-4ljjfs2dj2o7l6el.us.auth0.com/authorize?audience=apiv2&response_type=token&client_id=3Q6Za4vm6fTlqvkqgeDPOAkqmQuxtFC6&redirect_uri=http://localhost:5000)
 
-```
+```bash
 https://{{YOUR_DOMAIN}}/authorize?audience={{API_IDENTIFIER}}&response_type=token&client_id={{YOUR_CLIENT_ID}}&redirect_uri={{YOUR_CALLBACK_URI}}
 ```
 
@@ -91,7 +91,7 @@ Two roles are created for users under `Users & Roles` section in Auth0
 
 * Admin:
     * represents a person that manages the invitations in the database
-    * Admin can manage invitations and have the following permissions:
+    * Admin have the following permissions:
         * `post:invitation`
         * `patch:invitation`
         * `delete:invitation`
@@ -99,7 +99,7 @@ Two roles are created for users under `Users & Roles` section in Auth0
         * `get:invitation-rsvp-details`
 * Guest:
     * represents a person that can respond to an invitation
-    * Can perform GET operation on invitations, and CRUD operations on RSVP.
+    * Guest have the following permissions:
         * `get:invitation-rsvp-details`
         * `post:invitation-rsvp`
         * `patch:invitation-rsvp`
@@ -132,6 +132,7 @@ Two roles are created for users under `Users & Roles` section in Auth0
 
 ### Base URL
 `http://localhost:5000`
+
 ### Error Handling
 The application will return the following error types when requests fail:
 

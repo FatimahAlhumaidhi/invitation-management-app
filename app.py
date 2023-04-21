@@ -4,13 +4,15 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-from database.models import db_drop_and_create_all, setup_db, RSVP, Invitation
+from database.models import setup_db, RSVP, Invitation
 from auth.auth import AuthError, requires_auth
 
 import os
 import logging
 
 LOG_LEVEL = os.environ.get('LOG_LEVEL', 'INFO')
+LOG_FILE = os.environ.get('LOG_FILE', 'app.log')
+
 def _logger():
     '''
     Setup logger format, level, and handler.
@@ -18,18 +20,15 @@ def _logger():
     RETURNS: log object
     '''
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-
     log = logging.getLogger(__name__)
     log.setLevel(LOG_LEVEL)
-
-    stream_handler = logging.StreamHandler()
-    stream_handler.setFormatter(formatter)
-
-    log.addHandler(stream_handler)
+    handler = logging.FileHandler(LOG_FILE)
+    handler.setFormatter(formatter)
+    log.addHandler(handler)
     return log
 
 LOG = _logger()
-LOG.debug("Starting with log level: %s" % LOG_LEVEL )
+LOG.debug("Starting with log level: %s" % LOG_LEVEL)
 
 
 def create_app(test_config=None):
@@ -37,7 +36,6 @@ def create_app(test_config=None):
     app = Flask(__name__)
     setup_db(app)
     CORS(app)
-    # db_drop_and_create_all()
 
     @app.route('/invitations', methods=['GET'])
     def get_invitations():
