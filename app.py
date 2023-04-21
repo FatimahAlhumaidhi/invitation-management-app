@@ -38,7 +38,7 @@ def create_app(test_config=None):
     CORS(app)
 
     @app.route('/', methods=['GET'])
-    def get_invitations():
+    def get_index():
         return jsonify(success=True, Hello='World')
 
     @app.route('/invitations', methods=['GET'])
