@@ -20,11 +20,13 @@ def _logger():
     RETURNS: log object
     '''
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
     log = logging.getLogger(__name__)
     log.setLevel(LOG_LEVEL)
-    handler = logging.FileHandler(LOG_FILE)
-    handler.setFormatter(formatter)
-    log.addHandler(handler)
+
+    stream_handler = logging.StreamHandler()
+    stream_handler.setFormatter(formatter)
+    log.addHandler(stream_handler)
     return log
 
 LOG = _logger()
