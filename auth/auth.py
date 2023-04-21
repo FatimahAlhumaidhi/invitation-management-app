@@ -8,11 +8,10 @@ import os
 
 load_dotenv()
 
-AUTH0_DOMAIN = os.getenv('AUTH0_DOMAIN', 'dev-4ljjfs2dj2o7l6el.us.auth0.com') 
+AUTH0_DOMAIN = os.getenv('AUTH0_DOMAIN') 
 ALGORITHMS = ['RS256']
-API_AUDIENCE = os.getenv('API_AUDIENCE', 'apiv2')
+API_AUDIENCE = os.getenv('API_AUDIENCE')
 
-## AuthError Exception
 '''
 AuthError Exception
 A standardized way to communicate auth failure modes
@@ -23,7 +22,6 @@ class AuthError(Exception):
         self.status_code = status_code
 
 
-## Auth Header
 
 '''
 get_token_auth_header() method

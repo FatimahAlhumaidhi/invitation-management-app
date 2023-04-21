@@ -123,7 +123,6 @@ class RSVP(db.Model):
     def format(self):
         return {
             'id': self.id,
-            'jwt_sub': self.jwt_sub,
             'invitation_id': self.invitation_id,
             'response': self.response,
             'guest_name': self.guest_name if self.guest_name else None,

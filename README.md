@@ -82,7 +82,7 @@ The following permissions are created under API settings.
 * `patch:invitation`
 * `delete:invitation`
 * `get:invitation-rsvps`
-* `get:rsvp-details`
+* `get:invitation-rsvp-details`
 * `post:invitation-rsvp`
 * `patch:invitation-rsvp`
 * `delete:invitation-rsvp`
@@ -141,7 +141,6 @@ The application will return the following error types when requests fail:
 - 400: Bad Request
 - 401: Unauthorized
 - 404: Resource Not Found
-- 405: Method Not Allowed
 - 422: Not Processable
 
 Errors are returned as JSON objects in the following format:
@@ -157,10 +156,11 @@ Errors are returned as JSON objects in the following format:
 
 `GET /invitations`
 - Returns a list of all invitations.
-- Sample query: 
+- Sample Request: 
 ```bash
 curl -X GET \
-    http://localhost:5000/invitations
+    http://localhost:5000/invitations \
+    -H 'Content-Type: application/json' 
 ```
 - Sample response
 ```json
@@ -185,10 +185,11 @@ curl -X GET \
 
 `GET /invitations/int:id`
 - Returns an invitation by id.
-- Sample query: 
+- Sample Request: 
 ```bash
 curl -X GET \
-    http://localhost:5000/invitations/1
+    http://localhost:5000/invitations/1 \
+    -H 'Content-Type: application/json' 
 ```
 - Sample response
 ```json
@@ -205,11 +206,12 @@ curl -X GET \
 
 `POST /invitations`
 - Create a new invitation.
-- Sample query:
+- Sample Request:
 ```bash
 curl -X POST\
     http://localhost:5000/invitations \
-    -H "Authorization: Bearer {$TOKEN}"\
+    -H 'Authorization: Bearer {$TOKEN}' \
+    -H 'Content-Type: application/json' \
     -d '{"name":"John Smith", 
         "email":"john@example.com", 
         "description":"Please join us to celebrate our wedding."}'
@@ -229,11 +231,12 @@ curl -X POST\
 
 `PATCH /invitations/int:id`
 - Update an invitation by id.
-- Sample query:
+- Sample Request:
 ```bash
 curl -X PATCH \
     http://localhost:5000/invitations/1 \
-    -H "Authorization: Bearer {$TOKEN}" \
+    -H 'Authorization: Bearer {$TOKEN}' \
+    -H 'Content-Type: application/json' \
     -d '{"name":"John Doe"}'
 ```
 - Sample response
@@ -251,11 +254,12 @@ curl -X PATCH \
 
 `DELETE /invitations/int:id`
 - Delete an invitation by id.
-- Sample query:
+- Sample Request:
 ```bash
 curl -X DELETE \
     http://localhost:5000/invitations/1 \
-    -H "Authorization: Bearer {$TOKEN}"
+    -H 'Authorization: Bearer {$TOKEN}' \
+    -H 'Content-Type: application/json' 
 ```
 - Sample response
 ```json
@@ -267,11 +271,12 @@ curl -X DELETE \
 
 `GET /invitations/int:invitation_id/rsvps`
 - Get a list of RSVPs for an invitation by id.
-- Sample query:
+- Sample Request:
 ```bash
 curl -X GET \
     http://localhost:5000/invitations/1/rsvps \
-    -H "Authorization: Bearer {$TOKEN}"
+    -H "Authorization: Bearer {$TOKEN}" \
+    -H 'Content-Type: application/json' 
 ```
 - Sample response
 ```json
@@ -305,6 +310,7 @@ curl -X GET \
 curl -X GET \
   http://localhost:5000/invitations/1/rsvps/1 \
   -H 'Authorization: Bearer {$TOKEN}' \
+  -H 'Content-Type: application/json' 
 ```
 - Sample Response:
 ```json
@@ -386,6 +392,7 @@ curl -X PATCH \
 curl -X DELETE \
   http://localhost:5000/invitations/1/rsvps/1 \
   -H 'Authorization: Bearer {$TOKEN}' \
+  -H 'Content-Type: application/json' 
 ```
 - Sample Response:
 ```json

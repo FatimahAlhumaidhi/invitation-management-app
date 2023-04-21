@@ -11,12 +11,10 @@ import os
 import logging
 
 LOG_LEVEL = os.environ.get('LOG_LEVEL', 'INFO')
-LOG_FILE = os.environ.get('LOG_FILE', 'app.log')
 
 def _logger():
     '''
     Setup logger format, level, and handler.
-
     RETURNS: log object
     '''
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -304,4 +302,4 @@ def create_app(test_config=None):
 app = create_app()
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1')
+    app.run()
